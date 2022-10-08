@@ -30,7 +30,16 @@ class Scanner(source: String) {
 
     private fun scanToken(): Byte {  // Token ::=
         when (currentChar) {
-            in 'a'..'z', 'I', 'S' -> {
+            '\'' -> {
+                takeIt()
+                while (currentChar != '\'') {
+                    takeIt()
+                }
+                takeIt()
+                return Token.CHAR_LITERAL
+            }
+            in 'a'..'z',
+            in 'A'..'S' -> {
                 takeIt()  // Letter
                 while (isLetter(currentChar) || isDigit(currentChar))
                     takeIt()

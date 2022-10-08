@@ -58,4 +58,16 @@ internal class ScannerTest {
         val token = sut.scan()
         Assertions.assertNull(token)
     }
+
+    @Test
+    fun `Char 리터럴을 스캔하면 CHAR_LITERAL 토큰을 반환한다`() {
+        val source = """
+            'a'$EOT
+        """.trimIndent()
+
+        val sut = Scanner(source)
+        val token = sut.scan()
+        Assertions.assertEquals("\'a\'", token!!.spelling)
+        Assertions.assertEquals(Token.CHAR_LITERAL, token.kind)
+    }
 }
