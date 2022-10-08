@@ -10,7 +10,10 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":ast"))
+    implementation(project(":scanner"))
     implementation(kotlin("stdlib"))
     testImplementation(Libs.Junit.api)
-    testImplementation(Libs.Junit.engine)
+    testImplementation(Libs.Matcher.truth)
+    testRuntimeOnly(Libs.Junit.engine)
 }
