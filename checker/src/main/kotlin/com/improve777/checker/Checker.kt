@@ -4,10 +4,10 @@ import com.improve777.ast.AssignCommand
 import com.improve777.ast.BinaryExpression
 import com.improve777.ast.BinaryOperatorDeclaration
 import com.improve777.ast.CallCommand
-import com.improve777.ast.CharLiteral
 import com.improve777.ast.CharLiteralExpression
 import com.improve777.ast.ConstDeclaration
 import com.improve777.ast.Declaration
+import com.improve777.ast.EmptyExpression
 import com.improve777.ast.EqualOperatorDeclaration
 import com.improve777.ast.Identifier
 import com.improve777.ast.IfCommand
@@ -40,7 +40,7 @@ class Checker : Visitor {
             "false",
             ConstDeclaration(
                 Identifier("false"),
-                CharLiteralExpression(CharLiteral("false")).apply {
+                EmptyExpression().apply {
                     type = Type.bool
                 }
             )
@@ -49,7 +49,7 @@ class Checker : Visitor {
             "true",
             ConstDeclaration(
                 Identifier("true"),
-                CharLiteralExpression(CharLiteral("true")).apply {
+                EmptyExpression().apply {
                     type = Type.bool
                 }
             )
@@ -64,9 +64,9 @@ class Checker : Visitor {
             )
         )
 
-        idTable.enter("Char", TypeDeclaration(Type.char))
-        idTable.enter("Integer", TypeDeclaration(Type.int))
-        idTable.enter("Boolean", TypeDeclaration(Type.bool))
+        idTable.enter("Char", TypeDeclaration(Identifier("Char"), Type.char))
+        idTable.enter("Integer", TypeDeclaration(Identifier("Integer"), Type.int))
+        idTable.enter("Boolean", TypeDeclaration(Identifier("Boolean"), Type.bool))
 
         // operator
         idTable.enter("+", BinaryOperatorDeclaration(Type.int, Type.int, Type.int))
@@ -217,10 +217,6 @@ class Checker : Visitor {
             is VarDeclaration -> {
                 vname.type = decl.T.type
                 vname.variable = true
-            }
-            is TypeDeclaration -> {
-                vname.type = decl.type
-                vname.variable = false
             }
         }
         return vname.type

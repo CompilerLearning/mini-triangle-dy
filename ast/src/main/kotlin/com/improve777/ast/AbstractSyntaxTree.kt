@@ -109,6 +109,10 @@ class CharLiteralExpression(val CL: CharLiteral) : Expression() {
     }
 }
 
+class EmptyExpression : Expression() {
+    override fun visit(v: Visitor, arg: Any?): Any? = null
+}
+
 abstract class Vname : AST() {
     var type: Type? = null
     var variable: Boolean = false
@@ -168,7 +172,10 @@ class EqualOperatorDeclaration(val resultType: Type) : Declaration() {
     override fun visit(v: Visitor, arg: Any?): Any? = null
 }
 
-class TypeDeclaration(val type: Type) : Declaration() {
+class TypeDeclaration(
+    val identifier: Identifier,
+    val type: Type,
+) : Declaration() {
     override fun visit(v: Visitor, arg: Any?): Any? = null
 }
 
