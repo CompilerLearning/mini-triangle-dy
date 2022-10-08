@@ -1,17 +1,20 @@
 package com.improve777.scanner
 
-import org.junit.jupiter.api.Assertions
+import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 internal class ScannerTest {
     @Test
     fun `소스 프로그램이 비어 있으면 에러를 반환한다`() {
         val source = ""
 
-        assertThrows<IllegalArgumentException>("Source program must not be empty.") {
+        val result = runCatching {
             val sut = Scanner(source)
+        }.onFailure {
+            assertThat(it).isInstanceOf(IllegalArgumentException::class.java)
+            assertThat(it.message).isEqualTo("Source program must not be empty.")
         }
+        assertThat(result.isFailure).isTrue()
     }
 
     @Test
@@ -31,15 +34,15 @@ internal class ScannerTest {
             }
         }
 
-        Assertions.assertEquals(12, results.size)
+        assertThat(results.size).isEqualTo(12)
 
-        val symbols = listOf(
+        val expected = listOf(
             Token.LET, Token.VAR, Token.IDENTIFIER, Token.COLON, Token.IDENTIFIER,
             Token.IN,
             Token.IDENTIFIER, Token.BECOMES, Token.IDENTIFIER, Token.OPERATOR, Token.INT_LITERAL, Token.EOT,
         )
 
-        Assertions.assertEquals(symbols, results.map { it.kind })
+        assertThat(results.map { it.kind }).isEqualTo(expected)
     }
 
     @Test
@@ -56,7 +59,7 @@ internal class ScannerTest {
         }
 
         val token = sut.scan()
-        Assertions.assertNull(token)
+        assertThat(token).isNull()
     }
 
     @Test
@@ -67,7 +70,8 @@ internal class ScannerTest {
 
         val sut = Scanner(source)
         val token = sut.scan()
-        Assertions.assertEquals("\'a\'", token!!.spelling)
-        Assertions.assertEquals(Token.CHAR_LITERAL, token.kind)
+
+        assertThat(token!!.spelling).isEqualTo("\'a\'")
+        assertThat(token.kind).isEqualTo(Token.CHAR_LITERAL)
     }
 }
