@@ -78,7 +78,7 @@ class Parser(
                     Token.BECOMES -> {
                         acceptIt()
                         val expression = parseExpression()
-                        command = AssignCommand(identifier, expression)
+                        command = AssignCommand(SimpleVname(identifier), expression)
                     }
                     Token.LPAREN -> {
                         acceptIt()
