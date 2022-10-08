@@ -1,6 +1,6 @@
 object Libs {
     object Kotlin {
-        const val version = "1.6.10-RC"
+        const val version = "1.7.10"
     }
 
     object Junit {
