@@ -113,7 +113,9 @@ class Scanner(source: String) {
 
     private fun takeIt() {
         currentSpelling.append(currentChar)
-        currentChar = source.pop()
+        if (source.isNotEmpty()) {
+            currentChar = source.pop()
+        }
     }
 
     private fun isDigit(c: Char) = c.isDigit()
